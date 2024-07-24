@@ -110,3 +110,6 @@ func DecryptWithPrivateKey(ciphertext []byte, priv *rsa.PrivateKey) []byte {
 	}
 	return plaintext
 }
+
+// https://stackoverflow.com/questions/53221108/extracting-the-public-key-from-the-private-key
+// Todo Extract Private Key
