@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"encoding/base64"
 	"rsa-go/ciphers"
 	"testing"
 )
@@ -15,7 +16,7 @@ func TestRsaGenerate(t *testing.T) {
 
 func TestMessagesEncrypt(t *testing.T) {
 
-	_, pubKey := ciphers.GenerateKeyPair(2048)
+	privKey, pubKey := ciphers.GenerateKeyPair(2048)
 
 	t.Logf("Public Key: \n%v", string(ciphers.PublicKeyToBytes(pubKey)))
 
@@ -24,4 +25,13 @@ func TestMessagesEncrypt(t *testing.T) {
 
 	out := ciphers.EncryptWithPublicKey(plaintext, pubKey)
 	t.Logf("After Encrypt: %v", string(out))
+
+	t.Logf("Private Key: \n%v", string(ciphers.PrivateKeyToBytes(privKey)))
+
+	// Decode Base64
+	decode, _ := base64.StdEncoding.DecodeString(string(out))
+
+	decrypted := ciphers.DecryptWithPrivateKey(decode, privKey)
+	t.Logf("After Decrypted: %v", string(decrypted))
+
 }
